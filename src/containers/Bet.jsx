@@ -2,6 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class Bet extends Component {
+
+
+  constructor() {
+    super();
+    this.state = {
+      selectedOption: ''
+    }
+  }
+
+  select = (option) => {
+    this.setState({
+      selectedOption: option
+    })
+  }
+
   render() {
     const { title, positiveItem, negativeItem } = this.props;
     return (
@@ -13,9 +28,9 @@ class Bet extends Component {
               <h1>{title}</h1>
             </div>
 
-            <div className="contenders-container">
-              <div className="contender">
-              <input type="radio"/>
+            <div className="contenders-container" >
+              <div className="contender {'selected': this.state.selectedOption === 1}" onClick={this.select(1)}>
+              <input type="radio" value="1" checked={this.state.selectedOption === 1}/>
                 <h2>YES</h2>
                 <div className="contender-info">
                   <div className="row">
@@ -27,8 +42,8 @@ class Bet extends Component {
                 </div>
               </div>
 
-              <div className="contender">
-                <input type="radio" />
+              <div className="contender" onClick={this.select(2)}>
+                <input type="radio" value="2" checked={this.state.selectedOption === 2}/>
                 <h2>NO</h2>
                 <div className="contender-info">
                   <div className="row">
