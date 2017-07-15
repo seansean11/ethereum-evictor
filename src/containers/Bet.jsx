@@ -28,12 +28,11 @@ class Bet extends Component {
   submit(e) {
     const value = this.state.value === 1 ? true : false;
     this.props.makeBet(this.state.selectedOption, value);
-    this.setState({ placedBet: true });
-    e.preventDefault();
+    this.setState({ betPlaced: true });
   }
   
   render() {
-    const { title, publicKey, positiveItem, negativeItem, makeBet } = this.props
+    const { title, publicKey, positiveItem, negativeItem } = this.props
     return (
       <div className="pure-g">
         <div className="pure-u-1-1">
@@ -51,7 +50,7 @@ class Bet extends Component {
                     <span className="info-left">Betters</span><span className="info-right">54</span>
                   </div>
                   <div className="row">
-                    <span className="info-left">Contender Pot</span><span className="info-right">{positiveItem}</span>
+                    <span className="info-left">Contender Pot</span><span className="info-right">{positiveItem.total}</span>
                   </div>
                 </div>
                 <h2 className={"pick " + (this.state.selectedOption === 1 ? '' : 'hidden')}>
@@ -66,18 +65,18 @@ class Bet extends Component {
                     <span className="info-left">Betters</span><span className="info-right">34</span>
                   </div>
                   <div className="row">
-                    <span className="info-left">Contender Pot</span><span className="info-right">{negativeItem}</span>
+                    <span className="info-left">Contender Pot</span><span className="info-right">{negativeItem.total}</span>
                   </div>
                 </div>
                 <h2 className={"pick " + (this.state.selectedOption === 2 ? '' : 'hidden')}>
                   SELECTED!
-                  </h2>
+                </h2>
               </div>
             </div>
 
             <div className="action-container">
               <h2>Get in on this Bet!</h2>
-              <input type="text" placeholder="Your Wallet Key..." />
+              <input type="text" value={publicKey} placeholder="Your Wallet Address..." />
               <input type="text" placeholder="Your Bet Amount..." />
               <div>
                 <a onClick={() => this.submit()}>
@@ -108,9 +107,9 @@ Bet.PropTypes = {
 
 Bet.defaultProps = {
   title: 'Will Mcgregor beat Mayweather at the August 26th, 2017 fight?',
-  positiveItem: { name: "Yes", total: 12414 },
-  negativeItem: { name: "No", total: 423 },
-  publicKey: "0x251b693b329ec942783ab084eae4dc9c613766f9"
+  positiveItem: { name: "Yes", total: 0 },
+  negativeItem: { name: "No", total: 0 },
+  publicKey: ""
 }
 
 export default Bet;

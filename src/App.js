@@ -61,11 +61,18 @@ class App extends Component {
       escrow.deployed(this.state.title).then((instance) => {
         escrowInstance = instance;
         escrowInstance.totalBets.call().then(value => {
+          console.log(value[0].c[0], value[1].c[0]);
           this.setState({
             contract: escrowInstance,
             publicKey: accounts[1],
-            positiveItem: value[0][0],
-            negativeItem: value[1][0]
+            positiveItem: {
+              name: "Yes",
+              total: value[0].c[0]
+            },
+            negativeItem: {
+              name: "No",
+              total: value[1].c[0]
+            }
           });
         });
       });
