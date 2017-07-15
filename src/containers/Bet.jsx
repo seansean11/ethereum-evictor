@@ -13,6 +13,7 @@ class Bet extends Component {
 
   select = (option) => {
     console.log('selecting', option)
+
     this.setState({
       selectedOption: option
     })
@@ -30,7 +31,7 @@ class Bet extends Component {
             </div>
 
             <div className="contenders-container" >
-              <div className={'contender ' + (this.state.selectedOption === 1 ? 'selected' : '')} onClick={this.select(1)}>
+              <div className={'contender first ' + (this.state.selectedOption === 1 ? 'selected' : '')} onClick={() => this.select(1)}>
                 <h2>YES</h2>
                 <div className="contender-info">
                   <div className="row">
@@ -40,9 +41,12 @@ class Bet extends Component {
                     <span className="info-left">Contender Pot</span><span className="info-right">254</span>
                   </div>
                 </div>
+                <h2 className={"pick " + (this.state.selectedOption === 1 ? '' : 'hidden')}>
+                  SELECTED!
+                  </h2>
               </div>
 
-              <div className="contender" onClick={this.select(2)}>
+              <div className={'contender second ' + (this.state.selectedOption === 2 ? 'selected' : '')} onClick={() => this.select(2)}>
                 <h2>NO</h2>
                 <div className="contender-info">
                   <div className="row">
@@ -52,13 +56,16 @@ class Bet extends Component {
                     <span className="info-left">Contender Pot</span><span className="info-right">143</span>
                   </div>
                 </div>
+                <h2 className={"pick " + (this.state.selectedOption === 2 ? '' : 'hidden')}>
+                  SELECTED!
+                  </h2>
               </div>
             </div>
 
             <div className="action-container">
               <h2>Get in on this Bet!</h2>
-              <input type="text" placeholder="Your Wallet Key..."/>
-              <input type="text" placeholder="Your Bet Amount..."/>
+              <input type="text" placeholder="Your Wallet Key..." />
+              <input type="text" placeholder="Your Bet Amount..." />
               <div>
                 <a href="#">
                   Place Your Bet!
