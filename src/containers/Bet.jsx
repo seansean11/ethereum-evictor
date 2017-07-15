@@ -26,9 +26,12 @@ class Bet extends Component {
   }
 
   submit(e) {
-    const value = this.state.value === 1 ? true : false;
-    this.props.makeBet(this.state.selectedOption, value);
     this.setState({ betPlaced: true });
+    this.props.makeBet(this.state.selectedOption, this.state.value)
+      .then(result => {
+        console.log(result);
+        this.props.setTotals();
+      });
   }
   
   render() {
@@ -43,32 +46,32 @@ class Bet extends Component {
             </div>
 
             <div className="contenders-container" >
-              <div className={'contender first ' + (this.state.selectedOption === 1 ? 'selected' : '')} onClick={() => this.select(1)}>
+              <div className={'contender first ' + (this.state.selectedOption === 0 ? 'selected' : '')} onClick={() => this.select(0)}>
                 <h2>YES</h2>
                 <div className="contender-info">
                   <div className="row">
                     <span className="info-left">Betters</span><span className="info-right">54</span>
                   </div>
                   <div className="row">
-                    <span className="info-left">Contender Pot</span><span className="info-right">{positiveItem.total}</span>
+                    <span className="info-left">Contender Pot</span><span className="info-right">{negativeItem.total}</span>
                   </div>
                 </div>
-                <h2 className={"pick " + (this.state.selectedOption === 1 ? '' : 'hidden')}>
+                <h2 className={"pick " + (this.state.selectedOption === 0 ? '' : 'hidden')}>
                   SELECTED!
                   </h2>
               </div>
 
-              <div className={'contender second ' + (this.state.selectedOption === 2 ? 'selected' : '')} onClick={() => this.select(2)}>
+              <div className={'contender second ' + (this.state.selectedOption === 1 ? 'selected' : '')} onClick={() => this.select(1)}>
                 <h2>NO</h2>
                 <div className="contender-info">
                   <div className="row">
                     <span className="info-left">Betters</span><span className="info-right">34</span>
                   </div>
                   <div className="row">
-                    <span className="info-left">Contender Pot</span><span className="info-right">{negativeItem.total}</span>
+                    <span className="info-left">Contender Pot</span><span className="info-right">{positiveItem.total}</span>
                   </div>
                 </div>
-                <h2 className={"pick " + (this.state.selectedOption === 2 ? '' : 'hidden')}>
+                <h2 className={"pick " + (this.state.selectedOption === 1 ? '' : 'hidden')}>
                   SELECTED!
                 </h2>
               </div>
@@ -77,7 +80,7 @@ class Bet extends Component {
             <div className="action-container">
               <h2>Get in on this Bet!</h2>
               <input type="text" value={publicKey} placeholder="Your Wallet Address..." />
-              <input type="text" placeholder="Your Bet Amount..." />
+              <input onChange={this.setAmount} type="number" placeholder="Your Bet Amount..." />
               <div>
                 <a onClick={() => this.submit()}>
                   <span className={(this.state.betPlaced ? 'hidden' : '')}>Place Your Bet!</span>

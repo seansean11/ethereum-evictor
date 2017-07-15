@@ -16,10 +16,12 @@ class App extends Component {
     this.state = {
       publicKey: '',
       web3: null,
+      contract: null,
       title: 'Will Mcgregor beat Mayweather at the August 26th, 2017 fight?'
     };
 
     this.makeBet = this.makeBet.bind(this);
+    this.setTotals = this.setTotals.bind(this);
   }
 
   componentWillMount() {
@@ -41,6 +43,22 @@ class App extends Component {
     })
   }
 
+  setTotals() {
+    this.state.contract.totalBets.call().then(value => {
+      console.log(value);
+      this.setState({
+        positiveItem: {
+          name: "Yes",
+          total: value[0].c[1] || value[0].c[0]
+        },
+        negativeItem: {
+          name: "No",
+          total: value[1].c[1] || value[1].c[0]
+        }
+      });
+    });
+  }
+
   instantiateContract() {
     /*
      * SMART CONTRACT EXAMPLE
@@ -53,37 +71,24 @@ class App extends Component {
     const escrow = contract(EscrowContract);
     escrow.setProvider(this.state.web3.currentProvider)
 
-    // Declaring this for later so we can chain functions on escrow.
-    var escrowInstance
-
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
       escrow.deployed(this.state.title).then((instance) => {
-        escrowInstance = instance;
-        escrowInstance.totalBets.call().then(value => {
-          console.log(value[0].c[0], value[1].c[0]);
-          this.setState({
-            contract: escrowInstance,
-            publicKey: accounts[1],
-            positiveItem: {
-              name: "Yes",
-              total: value[0].c[0]
-            },
-            negativeItem: {
-              name: "No",
-              total: value[1].c[0]
-            }
-          });
-        });
+        this.setState({
+          contract: instance,
+          publicKey: accounts[1]
+        }, this.setTotals);
       });
     })
   }
 
   makeBet(boolBet, value) {
-    this.state.contract.newBet.sendTransaction(boolBet, { 
+    console.log(boolBet, value);
+    return this.state.contract.newBet.sendTransaction(boolBet, { 
       from: this.state.publicKey,
-      value: parseInt(value), gas: 900000
-    }).then(result => console.log(result));
+      value: parseInt(value, 10),
+      gas: 900000
+    });
   }
 
   render() {
@@ -96,6 +101,7 @@ class App extends Component {
           {React.cloneElement(this.props.children, {
             publicKey: this.state.publicKey,
             makeBet: this.makeBet,
+            setTotals: this.setTotals,
             positiveItem: this.state.positiveItem,
             negativeItem: this.state.negativeItem
           })}
