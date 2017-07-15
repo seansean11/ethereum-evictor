@@ -1,4 +1,4 @@
-var evictor = artifacts.require("./evictor.sol");
+var evictor = artifacts.require("Escrow.sol");
 
 
 module.exports = function(deployer) {

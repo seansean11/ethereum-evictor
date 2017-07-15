@@ -7,10 +7,10 @@ class Bet extends Component {
     super();
     this.state = {
       selectedOption: '',
-      value: ''
+      value: '',
+      betPlaced: false
     }
 
-    this.select = this.select.bind(this);
     this.setAmount = this.setAmount.bind(this);
     this.submit = this.submit.bind(this);
   }
@@ -26,12 +26,14 @@ class Bet extends Component {
   }
 
   submit(e) {
-    this.props.makeBet(this.state.selectedOption, this.state.value);
+    const value = this.state.value === 1 ? true : false;
+    this.props.makeBet(this.state.selectedOption, value);
+    this.setState({ placedBet: true });
     e.preventDefault();
   }
-
+  
   render() {
-    const { title, positiveItem, negativeItem } = this.props;
+    const { title, publicKey, positiveItem, negativeItem, makeBet } = this.props
     return (
       <div className="pure-g">
         <div className="pure-u-1-1">
@@ -42,40 +44,48 @@ class Bet extends Component {
             </div>
 
             <div className="contenders-container" >
-              <div className="contender" onClick={() => this.select(0)}>
-              <input type="radio" value="1" checked={this.state.selectedOption === 0}/>
+              <div className={'contender first ' + (this.state.selectedOption === 1 ? 'selected' : '')} onClick={() => this.select(1)}>
                 <h2>YES</h2>
                 <div className="contender-info">
                   <div className="row">
                     <span className="info-left">Betters</span><span className="info-right">54</span>
                   </div>
                   <div className="row">
-                    <span className="info-left">Contender Pot</span><span className="info-right">254</span>
+                    <span className="info-left">Contender Pot</span><span className="info-right">{positiveItem}</span>
                   </div>
                 </div>
+                <h2 className={"pick " + (this.state.selectedOption === 1 ? '' : 'hidden')}>
+                  SELECTED!
+                  </h2>
               </div>
 
-              <div className="contender" onClick={() => this.select(1)}>
-                <input type="radio" value="2" checked={this.state.selectedOption === 1}/>
+              <div className={'contender second ' + (this.state.selectedOption === 2 ? 'selected' : '')} onClick={() => this.select(2)}>
                 <h2>NO</h2>
                 <div className="contender-info">
-                  <span className="info-left">Betters</span><span className="info-right">34</span>
-                  <span className="info-left">Contender Pot</span><span className="info-right">143</span>
+                  <div className="row">
+                    <span className="info-left">Betters</span><span className="info-right">34</span>
+                  </div>
+                  <div className="row">
+                    <span className="info-left">Contender Pot</span><span className="info-right">{negativeItem}</span>
+                  </div>
                 </div>
+                <h2 className={"pick " + (this.state.selectedOption === 2 ? '' : 'hidden')}>
+                  SELECTED!
+                  </h2>
               </div>
             </div>
 
             <div className="action-container">
               <h2>Get in on this Bet!</h2>
-              <p>{this.props.publicKey}</p>
-              <input type="number" placeholder="Your Bet Amount..." onChange={this.setAmount} />
+              <input type="text" placeholder="Your Wallet Key..." />
+              <input type="text" placeholder="Your Bet Amount..." />
               <div>
-                <a href="#" onClick={this.submit}>
-                  Place Your Bet!
+                <a onClick={() => this.submit()}>
+                  <span className={(this.state.betPlaced ? 'hidden' : '')}>Place Your Bet!</span>
+                  <span className={(this.state.betPlaced ? '' : 'hidden')}>Bet Placed!</span>
                 </a>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -92,13 +102,15 @@ Bet.PropTypes = {
   negativeItem: PropTypes.shape({
     name: PropTypes.string,
     total: PropTypes.number
-  })
+  }),
+  publicKey: PropTypes.string
 };
 
 Bet.defaultProps = {
-  title: '',
+  title: 'Will Mcgregor beat Mayweather at the August 26th, 2017 fight?',
   positiveItem: { name: "Yes", total: 12414 },
   negativeItem: { name: "No", total: 423 },
+  publicKey: "0x251b693b329ec942783ab084eae4dc9c613766f9"
 }
 
 export default Bet;

@@ -7,6 +7,7 @@ import './css/oswald.css'
 import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
+import './css/main.css'
 
 class App extends Component {
   constructor(props) {
@@ -60,7 +61,6 @@ class App extends Component {
       escrow.deployed(this.state.title).then((instance) => {
         escrowInstance = instance;
         escrowInstance.totalBets.call().then(value => {
-          console.log(value);
           this.setState({
             contract: escrowInstance,
             publicKey: accounts[1],
@@ -77,10 +77,6 @@ class App extends Component {
       from: this.state.publicKey,
       value: parseInt(value), gas: 900000
     }).then(result => console.log(result));
-  }
-
-  totalBets() {
-    
   }
 
   render() {
