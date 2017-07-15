@@ -15,7 +15,7 @@ class Bet extends Component {
             
             <div className="contenders-container">
               <div className="contender">
-                <h2></h2>
+                <h2>YES</h2>
                 <div className="contender-info">
                   <div className="row">
                     <span className="info-left">Betters</span><span className="info-right">54</span>
@@ -27,7 +27,7 @@ class Bet extends Component {
               </div>
 
               <div className="contender">
-                <h2>[[CONTENDER TITLE]]</h2>
+                <h2>NO</h2>
                 <div className="contender-info">
                   <div className="row">
                     <span className="info-left">Betters</span><span className="info-right">34</span>
