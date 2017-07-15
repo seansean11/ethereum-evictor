@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from "prop-types";
 import SimpleStorageContract from '../build/contracts/SimpleStorage.json'
 import getWeb3 from './utils/getWeb3'
 
@@ -15,6 +16,10 @@ class App extends Component {
       storageValue: 0,
       web3: null
     }
+  }
+
+  componentDidMount() {
+    console.log(this.props.children);
   }
 
   componentWillMount() {
@@ -73,22 +78,16 @@ class App extends Component {
         <nav className="navbar pure-menu pure-menu-horizontal">
             <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
         </nav>
-
         <main className="container">
-          <div className="pure-g">
-            <div className="pure-u-1-1">
-              <h1>Good to Go!</h1>
-              <p>Your Truffle Box is installed and ready.</p>
-              <h2>Smart Contract Example</h2>
-              <p>If your contracts compiled and migrated successfully, below will show a stored value of 5 (by default).</p>
-              <p>Try changing the value stored on <strong>line 59</strong> of App.js.</p>
-              <p>The stored value is: {this.state.storageValue}</p>
-            </div>
-          </div>
+          {this.props.children}
         </main>
       </div>
     );
   }
 }
+
+App.propTypes = {
+  children: PropTypes.element.isRequired
+};
 
 export default App
