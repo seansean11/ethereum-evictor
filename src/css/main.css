@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 
 .info-right {
   float: right;
@@ -5,4 +8,48 @@
 
 .row {
   width: 100%;
+}
+
+.bet-box {
+  border: 1px solid black;
+}
+
+.contender {
+  width: 50%;
+  padding: 20px;
+  color: white;
+  background-color: grey;
+  display: inline-block;
+  margin: 0;
+}
+
+.contenders-container {
+  margin: 0;
+}
+
+.contender:hover {
+  background-color: black;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+.action-container {
+  margin: 0;
+  background-color: lightgrey;
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+}
+
+.action-container a {
+  display: inline-block;
+  background-color: lightgreen;
+  color: white;
+  font-weight: bolder;
+  font-size: 1.2em;
+  padding: 10px 30px;
 }
