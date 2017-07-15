@@ -15,6 +15,7 @@ class Bet extends Component {
 
             <div className="contenders-container">
               <div className="contender">
+              <input type="radio"/>
                 <h2>YES</h2>
                 <div className="contender-info">
                   <div className="row">
@@ -27,6 +28,7 @@ class Bet extends Component {
               </div>
 
               <div className="contender">
+                <input type="radio" />
                 <h2>NO</h2>
                 <div className="contender-info">
                   <div className="row">
@@ -43,11 +45,11 @@ class Bet extends Component {
               <h2>Get in on this Bet!</h2>
               <input type="text" placeholder="Your Wallet Key..."/>
               <input type="text" placeholder="Your Bet Amount..."/>
-              <a href="#">
-                <div className="place-bet">
+              <div>
+                <a href="#">
                   Place Your Bet!
-                </div>
-              </a>
+                </a>
+              </div>
             </div>
 
           </div>
