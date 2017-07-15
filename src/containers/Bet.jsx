@@ -6,14 +6,28 @@ class Bet extends Component {
   constructor() {
     super();
     this.state = {
-      selectedOption: ''
+      selectedOption: '',
+      value: ''
     }
+
+    this.select = this.select.bind(this);
+    this.setAmount = this.setAmount.bind(this);
+    this.submit = this.submit.bind(this);
   }
 
-  select = (option) => {
+  select(option) {
     this.setState({
       selectedOption: option
-    })
+    });
+  }
+
+  setAmount(e) {
+    this.setState({ value: e.target.value });
+  }
+
+  submit(e) {
+    this.props.makeBet(this.state.selectedOption, this.state.value);
+    e.preventDefault();
   }
 
   render() {
@@ -28,8 +42,8 @@ class Bet extends Component {
             </div>
 
             <div className="contenders-container" >
-              <div className="contender {'selected': this.state.selectedOption === 1}" onClick={this.select(1)}>
-              <input type="radio" value="1" checked={this.state.selectedOption === 1}/>
+              <div className="contender" onClick={() => this.select(0)}>
+              <input type="radio" value="1" checked={this.state.selectedOption === 0}/>
                 <h2>YES</h2>
                 <div className="contender-info">
                   <div className="row">
@@ -41,8 +55,8 @@ class Bet extends Component {
                 </div>
               </div>
 
-              <div className="contender" onClick={this.select(2)}>
-                <input type="radio" value="2" checked={this.state.selectedOption === 2}/>
+              <div className="contender" onClick={() => this.select(1)}>
+                <input type="radio" value="2" checked={this.state.selectedOption === 1}/>
                 <h2>NO</h2>
                 <div className="contender-info">
                   <span className="info-left">Betters</span><span className="info-right">34</span>
@@ -53,10 +67,10 @@ class Bet extends Component {
 
             <div className="action-container">
               <h2>Get in on this Bet!</h2>
-              <input type="text" placeholder="Your Wallet Key..."/>
-              <input type="text" placeholder="Your Bet Amount..."/>
+              <p>{this.props.publicKey}</p>
+              <input type="number" placeholder="Your Bet Amount..." onChange={this.setAmount} />
               <div>
-                <a href="#">
+                <a href="#" onClick={this.submit}>
                   Place Your Bet!
                 </a>
               </div>
@@ -78,15 +92,13 @@ Bet.PropTypes = {
   negativeItem: PropTypes.shape({
     name: PropTypes.string,
     total: PropTypes.number
-  }),
-  publicKey: PropTypes.string
+  })
 };
 
 Bet.defaultProps = {
   title: '',
   positiveItem: { name: "Yes", total: 12414 },
   negativeItem: { name: "No", total: 423 },
-  publicKey: "0x251b693b329ec942783ab084eae4dc9c613766f9"
 }
 
 export default Bet;

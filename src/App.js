@@ -13,9 +13,12 @@ class App extends Component {
     super(props)
 
     this.state = {
-      storageValue: 0,
-      web3: null
+      publicKey: '',
+      web3: null,
+      title: 'Will Mcgregor beat Mayweather at the August 26th, 2017 fight?'
     };
+
+    this.makeBet = this.makeBet.bind(this);
   }
 
   componentDidMount() {
@@ -29,11 +32,12 @@ class App extends Component {
     getWeb3
     .then(results => {
       this.setState({
-        web3: results.web3
+        web3: results.web3,
+        contract: null
       })
 
       // Instantiate contract once web3 provided.
-      this.instantiateContract('Will Mcgregor beat Mayweather at the August 26th, 2017 fight?');
+      this.instantiateContract(this.state.title);
     })
     .catch(() => {
       console.log('Error finding web3.')
@@ -57,16 +61,20 @@ class App extends Component {
 
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
-      escrow.deployed().then((instance) => {
+      escrow.deployed(this.state.title).then((instance) => {
         escrowInstance = instance
-        return escrowInstance.set(5, {from: accounts[0]});
-      }).then((result) => {
-        return escrowInstance.get.call(accounts[0]);
-      }).then((result) => {
-        console.log(result.c[0]);
-        return this.setState({ storageValue: result.c[0] })
-      })
+        escrowInstance.newBet.call(true, { from: this.state.publicKey, value: 100, gas: 900000 })
+          .then(result => console.log(result));
+        this.setState({ contract: escrowInstance });
+        this.setState({ publicKey: accounts[1] });
+      });
     })
+  }
+
+  makeBet(boolBet, value) {
+    console.log(this.state.contract);
+    this.state.contract.newBet(boolBet, { from: this.state.publicKey, value: 100, gas: 900000 })
+      .then(result => console.log(result));
   }
 
   render() {
@@ -76,7 +84,10 @@ class App extends Component {
             <a href="#" className="pure-menu-heading pure-menu-link">BetBox</a>
         </nav>
         <main className="container">
-          {this.props.children}
+          {React.cloneElement(this.props.children, {
+            publicKey: this.state.publicKey,
+            makeBet: this.makeBet
+          })}
         </main>
       </div>
     );
