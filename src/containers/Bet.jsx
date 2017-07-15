@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class Bet extends Component {
-  constructor() {
-
-  }
-
   render() {
     const { title, positiveItem, negativeItem } = this.props;
     return (
@@ -56,18 +52,20 @@ class Bet extends Component {
 Bet.PropTypes = {
   title: PropTypes.string,
   positiveItem: PropTypes.shape({
+    name: PropTypes.string,
     total: PropTypes.number
   }),
   negativeItem: PropTypes.shape({
+    name: PropTypes.string,
     total: PropTypes.number
   }),
   publicKey: PropTypes.string
 };
 
 Bet.defaultProps = {
-  title: 'Bet Title',
-  positiveItem: { total: 12414 },
-  negativeItem: { total: 423 },
+  title: 'Will Mcgregor beat Mayweather at the August 26th, 2017 fight?',
+  positiveItem: { name: "Yes", total: 12414 },
+  negativeItem: { name: "No", total: 423 },
   publicKey: "0x251b693b329ec942783ab084eae4dc9c613766f9"
 }
 
