@@ -21,10 +21,6 @@ class App extends Component {
     this.makeBet = this.makeBet.bind(this);
   }
 
-  componentDidMount() {
-    console.log(this.props.children);
-  }
-
   componentWillMount() {
     // Get network provider and web3 instance.
     // See utils/getWeb3 for more info.
@@ -62,19 +58,29 @@ class App extends Component {
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
       escrow.deployed(this.state.title).then((instance) => {
-        escrowInstance = instance
-        escrowInstance.newBet.call(true, { from: this.state.publicKey, value: 100, gas: 900000 })
-          .then(result => console.log(result));
-        this.setState({ contract: escrowInstance });
-        this.setState({ publicKey: accounts[1] });
+        escrowInstance = instance;
+        escrowInstance.totalBets.call().then(value => {
+          console.log(value);
+          this.setState({
+            contract: escrowInstance,
+            publicKey: accounts[1],
+            positiveItem: value[0][0],
+            negativeItem: value[1][0]
+          });
+        });
       });
     })
   }
 
   makeBet(boolBet, value) {
-    console.log(this.state.contract);
-    this.state.contract.newBet(boolBet, { from: this.state.publicKey, value: 100, gas: 900000 })
-      .then(result => console.log(result));
+    this.state.contract.newBet.sendTransaction(boolBet, { 
+      from: this.state.publicKey,
+      value: parseInt(value), gas: 900000
+    }).then(result => console.log(result));
+  }
+
+  totalBets() {
+    
   }
 
   render() {
@@ -86,7 +92,9 @@ class App extends Component {
         <main className="container">
           {React.cloneElement(this.props.children, {
             publicKey: this.state.publicKey,
-            makeBet: this.makeBet
+            makeBet: this.makeBet,
+            positiveItem: this.state.positiveItem,
+            negativeItem: this.state.negativeItem
           })}
         </main>
       </div>
