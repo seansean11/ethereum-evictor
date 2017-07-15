@@ -7,14 +7,21 @@ class Bet extends Component {
   constructor() {
     super();
     this.state = {
-      selectedOption: ''
+      selectedOption: '',
+      betPlaced: false
     }
   }
 
   select = (option) => {
-    console.log('selecting', option)
     this.setState({
       selectedOption: option
+    })
+  }
+
+  betPlaced = () => {
+    console.log('placed');
+    this.setState({
+      betPlaced: true
     })
   }
 
@@ -66,12 +73,12 @@ class Bet extends Component {
               <input type="text" placeholder="Your Wallet Key..." />
               <input type="text" placeholder="Your Bet Amount..." />
               <div>
-                <a href="#">
-                  Place Your Bet!
+                <a onClick={() => this.betPlaced()}>
+                  <span className={(this.state.betPlaced ? 'hidden' : '')}>Place Your Bet!</span>
+                  <span className={(this.state.betPlaced ? '' : 'hidden')}>Bet Placed!</span>
                 </a>
               </div>
             </div>
-
           </div>
         </div>
       </div>

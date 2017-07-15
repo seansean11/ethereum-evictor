@@ -75,6 +75,7 @@ h1, h2 {
 
 a {
   text-decoration: none;
+  cursor: pointer;
 }
 
 .action-container a {
@@ -85,6 +86,10 @@ a {
   font-weight: bolder;
   font-size: 1.2em;
   padding: 10px 30px;
+}
+
+a:hover {
+  background-color: green;
 }
 
 .action-container input {
@@ -100,4 +105,10 @@ a {
 
 .action-container  * {
   margin: 10px 0px;
+}
+
+.navbar {
+  background-color: black;
+  text-align: center;
+  font-size: 2em;
 }
