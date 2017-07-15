@@ -17,8 +17,12 @@ class Bet extends Component {
               <div className="contender">
                 <h2></h2>
                 <div className="contender-info">
-                  <span className="info-left">Betters</span><span className="info-right">54</span>
-                  <span className="info-left">Contender Pot</span><span className="info-right">254</span>
+                  <div className="row">
+                    <span className="info-left">Betters</span><span className="info-right">54</span>
+                  </div>
+                  <div className="row">
+                    <span className="info-left">Contender Pot</span><span className="info-right">254</span>
+                  </div>
                 </div>
               </div>
 
