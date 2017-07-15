@@ -12,6 +12,7 @@ class Bet extends Component {
   }
 
   select = (option) => {
+    console.log('selecting', option)
     this.setState({
       selectedOption: option
     })
@@ -29,8 +30,7 @@ class Bet extends Component {
             </div>
 
             <div className="contenders-container" >
-              <div className="contender {'selected': this.state.selectedOption === 1}" onClick={this.select(1)}>
-              <input type="radio" value="1" checked={this.state.selectedOption === 1}/>
+              <div className={'contender ' + (this.state.selectedOption === 1 ? 'selected' : '')} onClick={this.select(1)}>
                 <h2>YES</h2>
                 <div className="contender-info">
                   <div className="row">
@@ -43,7 +43,6 @@ class Bet extends Component {
               </div>
 
               <div className="contender" onClick={this.select(2)}>
-                <input type="radio" value="2" checked={this.state.selectedOption === 2}/>
                 <h2>NO</h2>
                 <div className="contender-info">
                   <div className="row">
