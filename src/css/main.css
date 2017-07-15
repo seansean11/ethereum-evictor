@@ -23,6 +23,10 @@
   margin: 0;
 }
 
+.contender.selected {
+  background-color: red;
+}
+
 .contenders-container {
   margin: 0;
 }
