@@ -13,7 +13,6 @@ class Bet extends Component {
 
   select = (option) => {
     console.log('selecting', option)
-
     this.setState({
       selectedOption: option
     })
