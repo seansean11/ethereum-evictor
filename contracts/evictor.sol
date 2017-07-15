@@ -3,6 +3,7 @@ pragma solidity ^0.4.8;
 contract Escrow {
 
   address owner;
+  string description;
 
   struct Bettor {
     address bettor;
@@ -14,19 +15,62 @@ contract Escrow {
   uint numBettors;
   mapping (uint => Bettor) bettors;
 
-  function Escrow() {
+
+  function Escrow(string _description) {
     owner = msg.sender;
+    description = _description;
     numBettors = 0;
   }
 
-  function newBet(bool _side, uint _amount) returns (bool betCreated) {
+  function totalBets() returns (uint trueBets, uint falseBets){
+    trueBets = 0;
+    falseBets = 0;
+
+    for(uint i1 = 0; i1 < numBettors; i1++ ){
+      Bettor b = bettors[i1];
+      if(b.side){
+        trueBets += b.amount;
+      }else{
+        falseBets += b.amount;
+      }
+    }
+    return;
+  }
+
+  function newBet(bool _side) payable returns (bool betCreated) {
     numBettors++;
     Bettor b = bettors[numBettors];
     b.bettor = msg.sender;
     b.side = _side;
-    b.amount = _amount;
+    b.amount = msg.value;
     b.timeOfBet = now;
     betCreated = true;
+  }
+
+  function payOut(bool outcome) { /*pay the winner*/
+    uint winnersBets = 0;
+    uint losersBets = 0;
+    uint totalBets = 0;
+
+    for (uint i = 0; i < numBettors; i++){
+      Bettor b = bettors[i];
+      if (b.side == outcome){
+        winnersBets += b.amount;
+        totalBets += b.amount;
+      } else {
+        losersBets += b.amount;
+        totalBets += b.amount;
+      }
+    }
+
+    for (uint j = 0; j < numBettors; j++){
+      Bettor c = bettors[j];
+      if (c.side == outcome){
+        uint pay = (c.amount / winnersBets * losersBets) + c.amount;
+        c.bettor.transfer(pay);
+      }
+    }
+
   }
 
 
