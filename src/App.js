@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from "prop-types";
-import SimpleStorageContract from '../build/contracts/SimpleStorage.json'
+import EscrowContract from '../build/contracts/Escrow.json'
 import getWeb3 from './utils/getWeb3'
 
 import './css/oswald.css'
 import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
-import './css/main.css'
 
 class App extends Component {
   constructor(props) {
@@ -16,7 +15,7 @@ class App extends Component {
     this.state = {
       storageValue: 0,
       web3: null
-    }
+    };
   }
 
   componentDidMount() {
@@ -34,7 +33,7 @@ class App extends Component {
       })
 
       // Instantiate contract once web3 provided.
-      this.instantiateContract()
+      this.instantiateContract('Will Mcgregor beat Mayweather at the August 26th, 2017 fight?');
     })
     .catch(() => {
       console.log('Error finding web3.')
@@ -49,25 +48,22 @@ class App extends Component {
      * state management library, but for convenience I've placed them here.
      */
 
-    const contract = require('truffle-contract')
-    const simpleStorage = contract(SimpleStorageContract)
-    simpleStorage.setProvider(this.state.web3.currentProvider)
+    const contract = require('truffle-contract');
+    const escrow = contract(EscrowContract);
+    escrow.setProvider(this.state.web3.currentProvider)
 
-    // Declaring this for later so we can chain functions on SimpleStorage.
-    var simpleStorageInstance
+    // Declaring this for later so we can chain functions on escrow.
+    var escrowInstance
 
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
-      simpleStorage.deployed().then((instance) => {
-        simpleStorageInstance = instance
-
-        // Stores a given value, 5 by default.
-        return simpleStorageInstance.set(5, {from: accounts[0]})
+      escrow.deployed().then((instance) => {
+        escrowInstance = instance
+        return escrowInstance.set(5, {from: accounts[0]});
       }).then((result) => {
-        // Get the value from the contract to prove it worked.
-        return simpleStorageInstance.get.call(accounts[0])
+        return escrowInstance.get.call(accounts[0]);
       }).then((result) => {
-        // Update state with the result.
+        console.log(result.c[0]);
         return this.setState({ storageValue: result.c[0] })
       })
     })

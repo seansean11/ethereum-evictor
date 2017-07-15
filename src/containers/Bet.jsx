@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 class Bet extends Component {
 
-
   constructor() {
     super();
     this.state = {
@@ -33,12 +32,8 @@ class Bet extends Component {
               <input type="radio" value="1" checked={this.state.selectedOption === 1}/>
                 <h2>YES</h2>
                 <div className="contender-info">
-                  <div className="row">
-                    <span className="info-left">Betters</span><span className="info-right">54</span>
-                  </div>
-                  <div className="row">
-                    <span className="info-left">Contender Pot</span><span className="info-right">254</span>
-                  </div>
+                  <span className="info-left">Betters</span><span className="info-right">54</span>
+                  <span className="info-left">Contender Pot</span><span className="info-right">254</span>
                 </div>
               </div>
 
@@ -46,12 +41,8 @@ class Bet extends Component {
                 <input type="radio" value="2" checked={this.state.selectedOption === 2}/>
                 <h2>NO</h2>
                 <div className="contender-info">
-                  <div className="row">
-                    <span className="info-left">Betters</span><span className="info-right">34</span>
-                  </div>
-                  <div className="row">
-                    <span className="info-left">Contender Pot</span><span className="info-right">143</span>
-                  </div>
+                  <span className="info-left">Betters</span><span className="info-right">34</span>
+                  <span className="info-left">Contender Pot</span><span className="info-right">143</span>
                 </div>
               </div>
             </div>
@@ -88,7 +79,7 @@ Bet.PropTypes = {
 };
 
 Bet.defaultProps = {
-  title: 'Will Mcgregor beat Mayweather at the August 26th, 2017 fight?',
+  title: '',
   positiveItem: { name: "Yes", total: 12414 },
   negativeItem: { name: "No", total: 423 },
   publicKey: "0x251b693b329ec942783ab084eae4dc9c613766f9"
